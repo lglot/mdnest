@@ -14,6 +14,16 @@ All notable changes to mdnest are documented here.
   after v4.8.12. A lock-file-only patch bump; v4.8.12 and earlier carry the
   affected version.
 
+### Added
+
+- **`read_note` can return part of a note.** An agent reading a long note
+  used to get the whole file every time. `outline: true` returns the line
+  count and every heading with its line number (headings inside code fences
+  are skipped); `section: "<heading>"` returns that heading's block, up to
+  the next heading of the same or higher level (an exact title wins over one
+  that only contains it); `offset`/`limit` return a range of lines. Without
+  them `read_note` returns the whole note, as before.
+
 ### Fixed
 
 - **An agent's or the CLI's change to an open note now shows, and never
@@ -46,6 +56,8 @@ All notable changes to mdnest are documented here.
 
 ### Tests
 
+- New: `mcp-server/test_read_slice.mjs` (outline, section and line ranges
+  of `read_note`; 9 of its 10 checks fail on v4.8.12).
 - New: `cli-default-install.spec.js` (fails on v4.8.12 in all four cases)
   and `shared-unavailable.spec.js` (a websocket that hangs or is refused;
   both cases left the note read-only on v4.8.12). The release gate now runs
